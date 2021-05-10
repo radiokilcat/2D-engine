@@ -32,7 +32,6 @@ std::string getResourcePath(const std::string &subDir = ""){
 	if (baseRes.empty()){
 		//SDL_GetBasePath will return NULL if something went wrong in retrieving the path
 		char *basePath = SDL_GetBasePath();
-        std::cout << "base path:" << basePath << std::endl;
 		if (basePath){
 			baseRes = basePath;
 			SDL_free(basePath);
@@ -43,9 +42,7 @@ std::string getResourcePath(const std::string &subDir = ""){
 		}
 		//We replace the last bin/ with res/ to get the the resource path
 		size_t pos = baseRes.rfind("bin");
-        std::cout << "pos: " << pos << std::endl;
 		baseRes = baseRes.substr(0, pos) + "res" + PATH_SEP;
-        std::cout << "base resources : " << baseRes << std::endl;
     }
 	//If we want a specific subdirectory path in the resource directory
 	//append it to the base path. This would be something like Lessons/res/Lesson0
