@@ -24,22 +24,54 @@ SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *renderer)
     return texture;
 }
 
-void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y, int w, int h)
+void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, SDL_Rect dst, SDL_Rect* clip = nullptr)
+{
+    SDL_RenderCopy(renderer, texture, clip, &dst);
+}
+
+void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = nullptr)
 {
     SDL_Rect dst;
     dst.x = x;
     dst.y = y;
-    dst.w = w;
-    dst.h = h;
+    if (clip != nullptr)
+    {
 
-    SDL_RenderCopy(renderer, texture, NULL, &dst);
+        dst.w = clip->w;
+        dst.h = clip->h;
+    }
+    else
+    {
+        SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h);
+    }
+
+    renderTexture(texture, renderer, dst, clip);
 }
 
-void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y)
+SDL_Texture* renderText(const std::string& message, const std::string& fontFile,
+                        SDL_Color color, int fontSize, SDL_Renderer* renderer)
 {
-    int w, h;
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-    renderTexture(texture, renderer, x, y, w, h);
+    TTF_Font *font = TTF_OpenFont(fontFile.c_str(), fontSize);
+        if (font == nullptr){
+            logSDLError(std::cout, "TTF_OpenFont");
+            return nullptr;
+        }
+        //We need to first render to a surface as that's what TTF_RenderText
+        //returns, then load that surface into a texture
+        SDL_Surface *surf = TTF_RenderText_Blended(font, message.c_str(), color);
+        if (surf == nullptr){
+            TTF_CloseFont(font);
+            logSDLError(std::cout, "TTF_RenderText");
+            return nullptr;
+        }
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surf);
+        if (texture == nullptr){
+            logSDLError(std::cout, "CreateTexture");
+        }
+        //Clean up the surface and font
+        SDL_FreeSurface(surf);
+        TTF_CloseFont(font);
+        return texture;
 }
 
 int main()
@@ -55,6 +87,13 @@ int main()
     if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG)
     {
         logSDLError(std::cout, "IMG_Init");
+        SDL_Quit();
+        return 1;
+    }
+
+    if (TTF_Init() != 0)
+    {
+        logSDLError(std::cout, "TTF_Init");
         SDL_Quit();
         return 1;
     }
@@ -94,6 +133,7 @@ int main()
 
     SDL_Event e;
     bool quit = false;
+    int useClip = 0;
 
     while(!quit){
         while(SDL_PollEvent(&e))
@@ -101,33 +141,50 @@ int main()
             if (e.type == SDL_QUIT)
                 quit = true;
             if (e.type == SDL_KEYDOWN)
-                quit = true;
-            if (e.type == SDL_MOUSEBUTTONDOWN)
-                quit = true;
+                switch (e.key.keysym.sym) {
+                case SDLK_1:
+                    useClip = 0;
+                    break;
+                case SDLK_2:
+                    useClip = 1;
+                    break;
+                case SDLK_3:
+                    useClip = 2;
+                    break;
+                case SDLK_4:
+                    useClip = 3;
+                    break;
+                default:
+                    break;
+                }
         }
         //First clear the renderer
         SDL_RenderClear(renderer);
 
-        int tilesX = SCREEN_WIDTH / TILE_SIZE;
-        int tilesY = SCREEN_HEIGHT / TILE_SIZE;
-        for (int tile_index = 0; tile_index < tilesX * tilesY; ++tile_index)
-        {
-            int x = (tile_index % tilesX) * TILE_SIZE;
-            int y = (tile_index / tilesX) * TILE_SIZE;
-            std::cout << "tilesX: " << tilesX << std::endl;
-            std::cout << "tilesY: " << tilesY << std::endl;
-            std::cout << "x : " << x << std::endl;
-            std::cout << "y : " << y << std::endl;
-            renderTexture(background, renderer, x , y, TILE_SIZE, TILE_SIZE );
-        }
-        int iW, iH;
-        SDL_QueryTexture(image, NULL, NULL, &iW, &iH);
+        int iW = 100, iH = 100;
         int x = SCREEN_WIDTH / 2 - iW / 2;
         int y = SCREEN_HEIGHT / 2 - iH / 2;
-        renderTexture(image, renderer, x, y);
+
+        SDL_Rect clips[4];
+        for ( int i = 0; i < 4; ++i )
+        {
+            clips[i].x = i / 2 * iW;
+            clips[i].y = i % 2 * iH;
+            clips[i].w = iW;
+            clips[i].h = iH;
+        }
+
+        renderTexture(image, renderer, x, y, &clips[useClip]);
+        SDL_Color color = { 255, 255, 255, 255 };
+        SDL_Texture* text = renderText("Super game", resPath + "sample.ttf",
+                                        color, 64, renderer);
+        int tW, tH;
+        SDL_QueryTexture(text, NULL, NULL, &tW, &tH);
+        int tX = SCREEN_WIDTH / 2 - tW / 2;
+        int tY = 0;
+        renderTexture(text, renderer, tX, tY);
 
         SDL_RenderPresent(renderer);
-        SDL_Delay(1000);
     }
     cleanup(background, image, renderer, window);
     IMG_Quit();

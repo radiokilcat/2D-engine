@@ -7,6 +7,6 @@ include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 
 add_executable(isometric-game main.cpp res_path.h cleanup.h)
 
-target_link_libraries(isometric-game ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARY})
+target_link_libraries(isometric-game ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY})
 
 install(TARGETS isometric-game RUNTIME DESTINATION ${BIN_DIR})
