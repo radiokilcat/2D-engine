@@ -1,4 +1,6 @@
 #include <SDL2/SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <iostream>
 
 #include "res_path.h"
@@ -90,7 +92,19 @@ int main()
         return 1;
     }
 
-    for (int i = 0; i < 3; ++i){
+    SDL_Event e;
+    bool quit = false;
+
+    while(!quit){
+        while(SDL_PollEvent(&e))
+        {
+            if (e.type == SDL_QUIT)
+                quit = true;
+            if (e.type == SDL_KEYDOWN)
+                quit = true;
+            if (e.type == SDL_MOUSEBUTTONDOWN)
+                quit = true;
+        }
         //First clear the renderer
         SDL_RenderClear(renderer);
 
