@@ -8,7 +8,6 @@
 
 const int SCREEN_WIDTH  = 640;
 const int SCREEN_HEIGHT = 480;
-const int TILE_SIZE = 40;
 
 void logSDLError(std::ostream &os, const std::string &msg)
 {
@@ -36,7 +35,6 @@ void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y, S
     dst.y = y;
     if (clip != nullptr)
     {
-
         dst.w = clip->w;
         dst.h = clip->h;
     }
