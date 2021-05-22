@@ -80,6 +80,12 @@ int main()
     Game game;
     game.init();
 
+//    while(game.running_)
+//    {
+//        game.handleEvents();
+//        game.update();
+//        game.render();
+//    }
 
     std::string resPath = getResourcePath("");
     SDL_Texture* background = loadTexture(resPath + "background.png", game.renderer_);
