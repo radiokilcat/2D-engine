@@ -5,20 +5,21 @@
 
 #include "res_path.h"
 #include "cleanup.h"
+#include "game.h"
 
 const int SCREEN_WIDTH  = 640;
 const int SCREEN_HEIGHT = 480;
 
-void logSDLError(std::ostream &os, const std::string &msg)
-{
-    os << msg << " error: " << SDL_GetError() << std::endl;
-}
+//void logSDLError(std::ostream &os, const std::string &msg)
+//{
+//    os << msg << " error: " << SDL_GetError() << std::endl;
+//}
 
 SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *renderer)
 {
     SDL_Texture* texture = IMG_LoadTexture(renderer, file.c_str());
     if (texture == nullptr)
-        logSDLError(std::cout, "CreateTextureFromSurface");
+//        logSDLError(std::cout, "CreateTextureFromSurface");
 
     return texture;
 }
@@ -51,7 +52,7 @@ SDL_Texture* renderText(const std::string& message, const std::string& fontFile,
 {
     TTF_Font *font = TTF_OpenFont(fontFile.c_str(), fontSize);
         if (font == nullptr){
-            logSDLError(std::cout, "TTF_OpenFont");
+//            logSDLError(std::cout, "TTF_OpenFont");
             return nullptr;
         }
         //We need to first render to a surface as that's what TTF_RenderText
@@ -59,12 +60,12 @@ SDL_Texture* renderText(const std::string& message, const std::string& fontFile,
         SDL_Surface *surf = TTF_RenderText_Blended(font, message.c_str(), color);
         if (surf == nullptr){
             TTF_CloseFont(font);
-            logSDLError(std::cout, "TTF_RenderText");
+//            logSDLError(std::cout, "TTF_RenderText");
             return nullptr;
         }
         SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surf);
         if (texture == nullptr){
-            logSDLError(std::cout, "CreateTexture");
+//            logSDLError(std::cout, "CreateTexture");
         }
         //Clean up the surface and font
         SDL_FreeSurface(surf);
@@ -76,54 +77,15 @@ int main()
 {
     std::cout << "Resource path is: " << getResourcePath() << std::endl;
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-    {
-        logSDLError(std::cout, "SDL_Init");
-        return 1;
-    }
+    Game game;
+    game.init();
 
-    if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG)
-    {
-        logSDLError(std::cout, "IMG_Init");
-        SDL_Quit();
-        return 1;
-    }
-
-    if (TTF_Init() != 0)
-    {
-        logSDLError(std::cout, "TTF_Init");
-        SDL_Quit();
-        return 1;
-    }
-
-    SDL_Window *window = SDL_CreateWindow(
-        "isometric-test",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        640,
-        480,
-        0
-    );
-
-    if (window == nullptr){
-        logSDLError(std::cout, "CreateWindow");
-        SDL_Quit();
-        return 1;
-    }
-
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-    if (renderer == nullptr){
-        logSDLError(std::cout, "CreateRenderer");
-        cleanup(window);
-        SDL_Quit();
-        return 1;
-    }
 
     std::string resPath = getResourcePath("");
-    SDL_Texture* background = loadTexture(resPath + "background.png", renderer);
-    SDL_Texture* image = loadTexture(resPath + "image.png", renderer);
+    SDL_Texture* background = loadTexture(resPath + "background.png", game.renderer_);
+    SDL_Texture* image = loadTexture(resPath + "image.png", game.renderer_);
     if (background == nullptr || image == nullptr){
-        cleanup(background, image, renderer, window);
+        cleanup(background, image, game.renderer_, game.window_);
         IMG_Quit();
         SDL_Quit();
         return 1;
@@ -157,7 +119,7 @@ int main()
                 }
         }
         //First clear the renderer
-        SDL_RenderClear(renderer);
+        SDL_RenderClear(game.renderer_);
 
         int iW = 100, iH = 100;
         int x = SCREEN_WIDTH / 2 - iW / 2;
@@ -172,19 +134,19 @@ int main()
             clips[i].h = iH;
         }
 
-        renderTexture(image, renderer, x, y, &clips[useClip]);
+        renderTexture(image, game.renderer_, x, y, &clips[useClip]);
         SDL_Color color = { 255, 255, 255, 255 };
         SDL_Texture* text = renderText("Super game", resPath + "sample.ttf",
-                                        color, 64, renderer);
+                                        color, 64, game.renderer_);
         int tW, tH;
         SDL_QueryTexture(text, NULL, NULL, &tW, &tH);
         int tX = SCREEN_WIDTH / 2 - tW / 2;
         int tY = 0;
-        renderTexture(text, renderer, tX, tY);
+        renderTexture(text, game.renderer_, tX, tY);
 
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(game.renderer_);
     }
-    cleanup(background, image, renderer, window);
+    cleanup(background, image, game.renderer_, game.window_);
     IMG_Quit();
     SDL_Quit();
 
