@@ -4,7 +4,6 @@
 
 TextureManager::TextureManager()
 {
-
 }
 
 bool TextureManager::loadTexture(std::string filename, std::string id, SDL_Renderer *renderer)
