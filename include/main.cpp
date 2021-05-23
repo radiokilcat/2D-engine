@@ -8,15 +8,13 @@
 
 int main()
 {
-//    std::cout << "Resource path is: " << getResourcePath() << std::endl;
-
     Game game;
     game.init();
 
     while(game.running())
     {
         game.handleEvents();
-//        game.update();
+        game.update();
         game.render();
     }
     game.clean();
