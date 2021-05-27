@@ -2,8 +2,20 @@
 #include <SDL_ttf.h>
 #include "texturemanager.h"
 
+static TextureManager* instance_;
+
 TextureManager::TextureManager()
 {
+}
+
+TextureManager* TextureManager::instance()
+{
+    if(instance_ == 0)
+    {
+        instance_ = new TextureManager;
+        return instance_;
+    }
+    return instance_;
 }
 
 bool TextureManager::loadTexture(std::string filename, std::string id, SDL_Renderer *renderer)

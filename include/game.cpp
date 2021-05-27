@@ -21,7 +21,6 @@ SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *renderer)
     return texture;
 }
 
-
 SDL_Texture* renderText(const std::string& message, const std::string& fontFile,
                         SDL_Color color, int fontSize, SDL_Renderer* renderer)
 {
@@ -101,8 +100,7 @@ bool Game::init()
     resPath_ = getResourcePath("");
 
 //    texture_manager_.loadTexture(resPath_ + "background.png", "bg", renderer_);
-    texture_manager_.loadTexture(resPath_ + "adventurer-Sheet.png", "image", renderer_);
-
+    TextureManager::instance()->loadTexture(resPath_ + "adventurer-Sheet.png", "image", renderer_);
     running_ = true;
 }
 
@@ -116,7 +114,7 @@ void Game::render()
     int y = SCREEN_HEIGHT / 2 - iH / 2;
 
 //    texture_manager_.draw("bg", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, renderer_ );
-    texture_manager_.drawFrame("image", x, y, iW, iH, 2, useClip_, renderer_ );
+    TextureManager::instance()->drawFrame("image", x, y, iW, iH, 2, useClip_, renderer_ );
 
     SDL_RenderPresent(renderer_);
 }
@@ -134,23 +132,6 @@ void Game::handleEvents()
     {
         if (e.type == SDL_QUIT)
             running_ = false;
-//        if (e.type == SDL_KEYDOWN)
-//            switch (e.key.keysym.sym) {
-//            case SDLK_1:
-//                useClip_ = 0;
-//                break;
-//            case SDLK_2:
-//                useClip_ = 1;
-//                break;
-//            case SDLK_3:
-//                useClip_ = 2;
-//                break;
-//            case SDLK_4:
-//                useClip_ = 3;
-//                break;
-//            default:
-//                break;
-//            }
     }
 }
 

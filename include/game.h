@@ -32,7 +32,6 @@ private:
     const int SCREEN_HEIGHT = 480;
 
     int currentFrame;
-    TextureManager texture_manager_;
 };
 
 #endif // GAME_H
