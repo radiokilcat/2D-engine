@@ -101,6 +101,8 @@ bool Game::init()
 
 //    texture_manager_.loadTexture(resPath_ + "background.png", "bg", renderer_);
     TextureManager::instance()->loadTexture(resPath_ + "adventurer-Sheet.png", "image", renderer_);
+    game_obj_.load(100, 100, 50, 37, "image");
+    player_.load(300, 300, 50, 37, "image");
     running_ = true;
 }
 
@@ -109,12 +111,14 @@ void Game::render()
     //First clear the renderer
     SDL_RenderClear(renderer_);
 
-    int iW = 50, iH = 37;
-    int x = SCREEN_WIDTH / 2 - iW / 2;
-    int y = SCREEN_HEIGHT / 2 - iH / 2;
+//    int iW = 50, iH = 37;
+//    int x = SCREEN_WIDTH / 2 - iW / 2;
+//    int y = SCREEN_HEIGHT / 2 - iH / 2;
 
-//    texture_manager_.draw("bg", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, renderer_ );
-    TextureManager::instance()->drawFrame("image", x, y, iW, iH, 2, useClip_, renderer_ );
+////    texture_manager_.draw("bg", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, renderer_ );
+//    TextureManager::instance()->drawFrame("image", x, y, iW, iH, 2, useClip_, renderer_ );
+    game_obj_.draw(renderer_);
+    player_.draw(renderer_);
 
     SDL_RenderPresent(renderer_);
 }
@@ -122,6 +126,8 @@ void Game::render()
 void Game::update()
 {
     useClip_ = int((SDL_GetTicks() / 100) % 6);
+    game_obj_.update();
+    player_.update();
 }
 
 void Game::handleEvents()

@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
+#include "gameobject.h"
+#include "player.h"
 #include "texturemanager.h"
 
 class Game
@@ -32,6 +34,8 @@ private:
     const int SCREEN_HEIGHT = 480;
 
     int currentFrame;
+    GameObject game_obj_;
+    Player player_;
 };
 
 #endif // GAME_H
