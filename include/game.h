@@ -8,6 +8,8 @@
 #include "player.h"
 #include "texturemanager.h"
 
+#include <vector>
+
 class Game
 {
 public:
@@ -34,8 +36,11 @@ private:
     const int SCREEN_HEIGHT = 480;
 
     int currentFrame;
-    GameObject game_obj_;
-    Player player_;
+
+    GameObject* player;
+    GameObject* npc;
+
+    std::vector<GameObject*> game_objects_;
 };
 
 #endif // GAME_H
