@@ -102,7 +102,7 @@ bool Game::init()
     TextureManager::instance()->loadTexture(resPath_ + "adventurer-Sheet.png", "image", renderer_);
 
     player = new Player;
-    npc = new GameObject;
+    npc = new Npc;
 
     player->load(100, 100, 50, 37, "image");
     npc->load(300, 300, 50, 37, "image");

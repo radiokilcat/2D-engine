@@ -6,6 +6,7 @@
 
 #include "gameobject.h"
 #include "player.h"
+#include "npc.h"
 #include "texturemanager.h"
 
 #include <vector>
