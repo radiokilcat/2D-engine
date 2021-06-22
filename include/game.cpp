@@ -52,7 +52,21 @@ Game::Game()
 
 }
 
-bool Game::init()
+Game* Game::instance_ = 0;
+Game* Game::instance()
+{
+    if (instance_ == 0)
+    {
+        instance_ = new Game();
+        return instance_;
+    }
+    else {
+        return instance_;
+    }
+}
+
+bool Game::init(const char* title, int xPos, int yPos,
+                int width, int height, bool fullscreen )
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
@@ -75,12 +89,12 @@ bool Game::init()
     }
 
     window_ = SDL_CreateWindow(
-        "isometric-test",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        640,
-        480,
-        0
+        title,
+        xPos,
+        yPos,
+        width,
+        height,
+        fullscreen
     );
 
     if (window_ == nullptr){
@@ -98,36 +112,20 @@ bool Game::init()
     }
     resPath_ = getResourcePath("");
 
-//    texture_manager_.loadTexture(resPath_ + "background.png", "bg", renderer_);
     TextureManager::instance()->loadTexture(resPath_ + "adventurer-Sheet.png", "image", renderer_);
 
-    player = new Player;
-    npc = new Npc;
-
-    player->load(100, 100, 50, 37, "image");
-    npc->load(300, 300, 50, 37, "image");
-
-    game_objects_.push_back(player);
-    game_objects_.push_back(npc);
+    game_objects_.push_back(new Player(new LoaderParams(100, 100, 50, 37, "image")));
+    game_objects_.push_back(new Npc(new LoaderParams(300, 300, 50, 37, "image")));
 
     running_ = true;
 }
 
 void Game::render()
 {
-    //First clear the renderer
     SDL_RenderClear(renderer_);
 
-//    int iW = 50, iH = 37;
-//    int x = SCREEN_WIDTH / 2 - iW / 2;
-//    int y = SCREEN_HEIGHT / 2 - iH / 2;
-
-////    texture_manager_.draw("bg", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, renderer_ );
-//    TextureManager::instance()->drawFrame("image", x, y, iW, iH, 2, useClip_, renderer_ );
-//    game_obj_.draw(renderer_);
-//    player_.draw(renderer_);
     for (auto it : game_objects_)
-        it->draw(renderer_);
+        it->draw();
 
     SDL_RenderPresent(renderer_);
 }

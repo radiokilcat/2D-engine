@@ -14,24 +14,29 @@
 class Game
 {
 public:
-    Game();
-    bool init();
+    bool init(const char* title, int xPox, int yPos,
+              int width, int height, bool fullscreen);
     void render();
     void update();
     void handleEvents();
     void clean();
 
     SDL_Window *window_;
-    SDL_Renderer *renderer_;
     bool running() { return running_; };
+    static Game* instance();
+
+    SDL_Renderer* getRenderer() const { return renderer_; }
 
 private:
+    Game();
+    static Game* instance_;
     bool running_ = false;
     int useClip_{0};
 
     SDL_Texture* background_;
     SDL_Texture* image_;
     std::string resPath_;
+    SDL_Renderer *renderer_;
 
     const int SCREEN_WIDTH  = 640;
     const int SCREEN_HEIGHT = 480;

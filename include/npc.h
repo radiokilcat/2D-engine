@@ -2,13 +2,13 @@
 #define NPC_H
 
 #include "gameobject.h"
+#include "sdl_gameobject.h"
 
-class Npc : public GameObject
+class Npc : public SDLGameObject
 {
 public:
-    Npc();
-    void load(int x, int y, int width, int height, std::string id);
-    void draw(SDL_Renderer* renderer);
+    Npc(const LoaderParams* params);
+    void draw();
     void update();
     void clean();
 };

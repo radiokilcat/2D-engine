@@ -2,13 +2,14 @@
 #define PLAYER_H
 
 #include "gameobject.h"
+#include "sdl_gameobject.h"
+#include "loaderparams.h"
 
-class Player: public GameObject
+class Player: public SDLGameObject
 {
 public:
-    Player();
-    void load(int x, int y, int width, int height, std::string texture_id);
-    void draw(SDL_Renderer* renderer);
+    Player(const LoaderParams* params);
+    void draw();
     void update();
     void clean();
 private:

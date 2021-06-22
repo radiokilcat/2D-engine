@@ -1,28 +1,23 @@
 #include "npc.h"
+#include "loaderparams.h"
 
-Npc::Npc()
+Npc::Npc(const LoaderParams *params)
+    : SDLGameObject(params)
 {
-
 }
 
-void Npc::load(int x, int y, int width, int height, std::string texture_id)
+void Npc::draw()
 {
-    GameObject::load(x, y, width, height, texture_id);
-}
-
-void Npc::draw(SDL_Renderer* renderer)
-{
-    GameObject::draw(renderer);
+    SDLGameObject::draw();
 }
 
 void Npc::update()
 {
-    ++x_;
-    ++y_;
+//    ++x_;
+//    ++y_;
     currentFrame_ = int((SDL_GetTicks() / 100) % 6);
 }
 
 void Npc::clean()
 {
-    GameObject::clean();
 }

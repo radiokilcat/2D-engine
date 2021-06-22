@@ -8,17 +8,21 @@
 
 int main()
 {
-    Game game;
-    game.init();
-
-    while(game.running())
+    if(Game::instance()->init("game", 100, 100, 640, 480, false))
     {
-        game.handleEvents();
-        game.update();
-        game.render();
-        SDL_Delay(10);
+        while(Game::instance()->running())
+        {
+            Game::instance()->handleEvents();
+            Game::instance()->update();
+            Game::instance()->render();
+            SDL_Delay(10);
+        }
+        Game::instance()->clean();
     }
-    game.clean();
+    else
+    {
+        std::cout << "Init failed" << std::endl;
+    }
 
     return 0;
 }
