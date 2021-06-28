@@ -10,11 +10,12 @@ add_executable(isometric-game main.cpp
                               cleanup.h
                               game.cpp
                               texturemanager.cpp
-                              gameobject.cpp
+                              gameobject.h
                               sdl_gameobject.cpp
                               player.cpp
                               npc.cpp
-                              loaderparams.cpp
+                              loaderparams.h
+                              vector2d.cpp
                               )
 
 target_link_libraries(isometric-game ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY})
