@@ -15,6 +15,7 @@ void Npc::update()
 {
 //    ++x_;
 //    ++y_;
+    position_.setX(position_.x() + 1);
     currentFrame_ = int((SDL_GetTicks() / 100) % 6);
 }
 
