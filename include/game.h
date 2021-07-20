@@ -20,6 +20,7 @@ public:
     void update();
     void handleEvents();
     void clean();
+    void quit();
 
     SDL_Window *window_;
     bool running() { return running_; };

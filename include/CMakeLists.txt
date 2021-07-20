@@ -16,6 +16,7 @@ add_executable(isometric-game main.cpp
                               npc.cpp
                               loaderparams.h
                               vector2d.cpp
+                              inputhandler.cpp
                               )
 
 target_link_libraries(isometric-game ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY})

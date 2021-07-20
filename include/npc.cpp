@@ -13,9 +13,14 @@ void Npc::draw()
 
 void Npc::update()
 {
-//    ++x_;
+//    ++x_;.
 //    ++y_;
-    position_.setX(position_.x() + 1);
+//    if (position_.x() >= 400)
+
+//        position_.setX(position_.x() - 1);
+//    else if (position_.x() < 300)
+//        position_.setX(position_.x() + 1);
+
     currentFrame_ = int((SDL_GetTicks() / 100) % 6);
 }
 

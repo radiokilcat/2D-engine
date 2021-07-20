@@ -7,6 +7,7 @@
 #include "res_path.h"
 #include "cleanup.h"
 #include "game.h"
+#include "inputhandler.h"
 
 void logSDLError(std::ostream &os, const std::string &msg)
 {
@@ -88,6 +89,8 @@ bool Game::init(const char* title, int xPos, int yPos,
         return 1;
     }
 
+    InputHandler::instance()->initializeJoysticks();
+
     window_ = SDL_CreateWindow(
         title,
         xPos,
@@ -139,18 +142,19 @@ void Game::update()
 
 void Game::handleEvents()
 {
-    SDL_Event e;
-
-    while(SDL_PollEvent(&e))
-    {
-        if (e.type == SDL_QUIT)
-            running_ = false;
-    }
+    InputHandler::instance()->update();
 }
 
 void Game::clean()
 {
+    InputHandler::instance()->clean();
     cleanup(renderer_, window_);
     IMG_Quit();
     SDL_Quit();
+}
+
+void Game::quit()
+{
+    running_ = false;
+    clean();
 }
