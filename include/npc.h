@@ -8,7 +8,7 @@ class Npc : public SDLGameObject
 {
 public:
     Npc(const LoaderParams* params);
-    void draw();
+    void draw_obj();
     void update();
     void clean();
 };

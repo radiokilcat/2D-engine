@@ -26,7 +26,7 @@ public:
     bool running() { return running_; };
     static Game* instance();
 
-    SDL_Renderer* getRenderer() const { return renderer_; }
+    [[nodiscard]] SDL_Renderer* getRenderer() const { return renderer_; }
 
 private:
     Game();

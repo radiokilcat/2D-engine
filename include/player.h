@@ -9,7 +9,7 @@ class Player: public SDLGameObject
 {
 public:
     Player(const LoaderParams* params);
-    void draw();
+    void draw_obj();
     void update();
     void clean();
     void handleInput();

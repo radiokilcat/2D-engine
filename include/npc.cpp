@@ -6,7 +6,7 @@ Npc::Npc(const LoaderParams *params)
 {
 }
 
-void Npc::draw()
+void Npc::draw_obj()
 {
     SDLGameObject::draw();
 }

@@ -6,7 +6,7 @@ Player::Player(const LoaderParams *params)
 {
 }
 
-void Player::draw()
+void Player::draw_obj()
 {
     SDLGameObject::draw();
 }
