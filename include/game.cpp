@@ -8,6 +8,7 @@
 #include "cleanup.h"
 #include "game.h"
 #include "inputhandler.h"
+#include "GameState.h"
 
 void logSDLError(std::ostream &os, const std::string &msg)
 {
@@ -50,7 +51,6 @@ SDL_Texture* renderText(const std::string& message, const std::string& fontFile,
 
 Game::Game()
 {
-
 }
 
 Game* Game::instance_ = 0;
@@ -117,10 +117,14 @@ bool Game::init(const char* title, int xPos, int yPos,
 
     TextureManager::instance()->loadTexture(resPath_ + "adventurer-Sheet.png", "image", renderer_);
 
+
     game_objects_.push_back(new Player(new LoaderParams(100, 100, 50, 37, "image")));
     game_objects_.push_back(new Npc(new LoaderParams(300, 300, 50, 37, "image")));
 
     running_ = true;
+
+    stateMachine_ = new GameStateMachine();
+    stateMachine_->changeState(new MenuState());
 }
 
 void Game::render()

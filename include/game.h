@@ -8,6 +8,7 @@
 #include "player.h"
 #include "npc.h"
 #include "texturemanager.h"
+#include "GameStateMachine.h"
 
 #include <vector>
 
@@ -48,6 +49,7 @@ private:
     GameObject* npc;
 
     std::vector<GameObject*> game_objects_;
+    GameStateMachine* stateMachine_;
 };
 
 #endif // GAME_H

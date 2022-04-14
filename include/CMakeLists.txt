@@ -1,12 +1,5 @@
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_ttf REQUIRED)
 
-include_directories(${SDL2_INCLUDE_DIRS})
-include_directories(${SDL2_IMAGE_INCLUDE_DIR})
-
-add_executable(isometric-game main.cpp
-                              res_path.h
+add_library(isometric-lib     res_path.h
                               cleanup.h
                               game.cpp
                               texturemanager.cpp
@@ -17,8 +10,11 @@ add_executable(isometric-game main.cpp
                               loaderparams.h
                               vector2d.cpp
                               inputhandler.cpp
-                              )
+                              GameState.cpp
+                              GameState.h
+                              GameStateMachine.cpp
+                              GameStateMachine.h)
 
-target_link_libraries(isometric-game ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${CONAN_LIBS})
+target_link_libraries(isometric-lib ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${CONAN_LIBS})
 
-install(TARGETS isometric-game RUNTIME DESTINATION ${BIN_DIR})
+install(TARGETS isometric-lib RUNTIME DESTINATION ${BIN_DIR})
