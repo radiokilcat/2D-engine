@@ -15,6 +15,7 @@ public:
     void drawFrame(std::string id, int x, int y, int width, int height,
               int currentRow, int currentFrame,
               SDL_Renderer* renderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
+    void clearFromTextureMap(std::string id);
 private:
     TextureManager();
     std::map<std::string, SDL_Texture*> texture_map_;

@@ -50,6 +50,8 @@ private:
 
     std::vector<GameObject*> game_objects_;
     GameStateMachine* stateMachine_;
+public:
+    GameStateMachine *getStateMachine() const;
 };
 
 #endif // GAME_H

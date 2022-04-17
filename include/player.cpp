@@ -28,7 +28,6 @@ void Player::clean()
 
 void Player::handleInput()
 {
-    std::cout << "handling input " << std::endl;
     if (InputHandler::instance()->joysticksInitialized())
     {
         if (InputHandler::instance()->xvalue(0, 1) > 0 ||
@@ -62,7 +61,6 @@ void Player::handleInput()
     }
     if (InputHandler::instance()->getMouseButtonState(LEFT))
     {
-        std::cout << "MOUSE LEFT IS PRESSED" << std::endl;
         velocity_.setX(1);
     }
     if (InputHandler::instance()->isKeyDown(SDL_SCANCODE_RIGHT))
@@ -82,4 +80,6 @@ void Player::handleInput()
     {
         velocity_.setY(2);
     }
+//    Vector2D* vec = InputHandler::instance()->getMousePosition();
+//    velocity_ = (*vec - position_) / 100;
 }

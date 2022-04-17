@@ -117,14 +117,14 @@ bool Game::init(const char* title, int xPos, int yPos,
 
     TextureManager::instance()->loadTexture(resPath_ + "adventurer-Sheet.png", "image", renderer_);
 
+    stateMachine_ = new GameStateMachine();
+    stateMachine_->changeState(new MenuState());
+
 
     game_objects_.push_back(new Player(new LoaderParams(100, 100, 50, 37, "image")));
     game_objects_.push_back(new Npc(new LoaderParams(300, 300, 50, 37, "image")));
 
     running_ = true;
-
-    stateMachine_ = new GameStateMachine();
-    stateMachine_->changeState(new MenuState());
 }
 
 void Game::render()
@@ -134,6 +134,8 @@ void Game::render()
     for (auto it : game_objects_)
         it->draw();
 
+    stateMachine_->render();
+
     SDL_RenderPresent(renderer_);
 }
 
@@ -142,11 +144,17 @@ void Game::update()
     useClip_ = int((SDL_GetTicks() / 100) % 6);
     for (auto it : game_objects_)
         it->update();
+    stateMachine_->update();
 }
 
 void Game::handleEvents()
 {
     InputHandler::instance()->update();
+
+    if (InputHandler::instance()->isKeyDown(SDL_SCANCODE_RETURN))
+    {
+        stateMachine_->changeState(new PlayState);
+    }
 }
 
 void Game::clean()
@@ -161,4 +169,9 @@ void Game::quit()
 {
     running_ = false;
     clean();
+}
+
+GameStateMachine *Game::getStateMachine() const
+{
+    return stateMachine_;
 }

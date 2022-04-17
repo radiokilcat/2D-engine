@@ -13,7 +13,9 @@ add_library(isometric-lib     res_path.h
                               GameState.cpp
                               GameState.h
                               GameStateMachine.cpp
-                              GameStateMachine.h)
+                              GameStateMachine.h
+                              MenuButton.h
+                              MenuButton.cpp)
 
 target_link_libraries(isometric-lib ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${CONAN_LIBS})
 

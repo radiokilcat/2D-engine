@@ -181,6 +181,11 @@ void InputHandler::update()
             if (event.button.button == SDL_BUTTON_RIGHT)
                 mouseButtonStates_[RIGHT] = false;
         }
+        if (event.type = SDL_MOUSEMOTION)
+        {
+            mousePosition_->setX(event.motion.x);
+            mousePosition_->setY(event.motion.y);
+        }
     }
 
 }
@@ -197,9 +202,15 @@ void InputHandler::clean()
 }
 
 InputHandler::InputHandler()
+: mousePosition_{new Vector2D{0.0, 0.0}}
 {
     for (int i = 0; i < 3; ++i)
     {
         mouseButtonStates_.push_back(false);
     }
+}
+
+Vector2D* InputHandler::getMousePosition() const
+{
+    return mousePosition_;
 }

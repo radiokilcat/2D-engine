@@ -26,6 +26,7 @@ public:
 
     bool getButtonState(int joy, int buttonNumber);
     bool getMouseButtonState(int buttonNumber);
+    Vector2D* getMousePosition() const;
 
     bool isKeyDown(SDL_Scancode code);
 
@@ -39,6 +40,9 @@ private:
     std::vector<std::pair<Vector2D*, Vector2D*>> joysticksValues_;
     std::vector<std::vector<bool>> buttonStates_;
     std::vector<bool> mouseButtonStates_;
+    Vector2D* mousePosition_;
+
+private:
 
     const Uint8* keyState_;
     bool joysticksInitialized_;
