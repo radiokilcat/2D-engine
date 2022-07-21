@@ -4,11 +4,12 @@
 
 #include <iostream>
 
-#include "res_path.h"
+//#include "res_path.h"
 #include "cleanup.h"
 #include "game.h"
 #include "inputhandler.h"
 #include "GameState.h"
+#include "PlayState.h"
 
 void logSDLError(std::ostream &os, const std::string &msg)
 {
@@ -113,16 +114,8 @@ bool Game::init(const char* title, int xPos, int yPos,
         SDL_Quit();
         return 1;
     }
-    resPath_ = getResourcePath("");
-
-    TextureManager::instance()->loadTexture(resPath_ + "adventurer-Sheet.png", "image", renderer_);
-
     stateMachine_ = new GameStateMachine();
     stateMachine_->changeState(new MenuState());
-
-
-    game_objects_.push_back(new Player(new LoaderParams(100, 100, 50, 37, "image")));
-    game_objects_.push_back(new Npc(new LoaderParams(300, 300, 50, 37, "image")));
 
     running_ = true;
 }

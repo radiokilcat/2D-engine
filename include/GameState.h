@@ -37,19 +37,5 @@ private:
     std::vector<GameObject*> game_objects_;
 };
 
-class PlayState : public GameState
-{
-public:
-    bool onEnter() override;
-    bool onExit() override;
-
-    void update() override;
-    void render() override;
-
-    std::string getID();
-
-private:
-    const std::string playID_ = "PLAY";
-};
 
 #endif //ISOMETRIC_GAME_GAMESTATE_H

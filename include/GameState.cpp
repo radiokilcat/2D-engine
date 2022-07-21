@@ -3,6 +3,7 @@
 #include "texturemanager.h"
 #include "game.h"
 #include "MenuButton.h"
+#include "PlayState.h"
 
 std::string MenuState::getID()
 {
@@ -70,25 +71,3 @@ void MenuState::exit_from_menu()
     Game::instance()->quit();
 }
 
-std::string PlayState::getID()
-{
-    return playID_;
-}
-
-bool PlayState::onEnter()
-{
-    std::cout << "Enter Play state" << std::endl;
-}
-
-bool PlayState::onExit()
-{
-    std::cout << "Exit Play state" << std::endl;
-}
-
-void PlayState::update()
-{
-}
-
-void PlayState::render()
-{
-}

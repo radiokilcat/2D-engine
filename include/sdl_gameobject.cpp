@@ -17,10 +17,20 @@ SDLGameObject::SDLGameObject(const LoaderParams *params)
 
 void SDLGameObject::draw()
 {
-    TextureManager::instance()->drawFrame(id_, (int)position_.x(), (int)position_.y(),
-                                          width_, height_,
-                                          currentRow_, currentFrame_,
-                                          Game::instance()->getRenderer());
+    if (velocity_.x() < 0)
+    {
+        TextureManager::instance()->drawFrame(id_, (Uint32)position_.x(), (Uint32)position_.y(),
+                                              width_, height_,
+                                              currentRow_, currentFrame_,
+                                              Game::instance()->getRenderer(), SDL_FLIP_HORIZONTAL);
+    }
+    else
+    {
+        TextureManager::instance()->drawFrame(id_, (Uint32)position_.x(), (Uint32)position_.y(),
+                                              width_, height_,
+                                              currentRow_, currentFrame_,
+                                              Game::instance()->getRenderer());
+    }
 }
 
 void SDLGameObject::update()
